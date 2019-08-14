@@ -25,6 +25,21 @@ func (db *Db) GetItems(c *gin.Context) {
 	fmt.Println(result)
 	c.JSON(http.StatusOK, result)
 }
+
+//Edita Item
+func (db *Db) UpdatePerson(c *gin.Context) {
+	var item new(model.Item)
+	id := c.Params.ByName("id")
+	if err := db.DB.Where("id = ?", id).First(&item).Error; err != nil {
+	   c.AbortWithStatus(404)
+	   fmt.Println(err)
+	}
+	c.BindJSON(&item)
+	db.Save(&item)
+	c.JSON(200, item)
+   }
+
+
 //Busca item por Id no banco
 func (db *Db) GetItemsById(c *gin.Context) {
 	var items = new([]model.Item)

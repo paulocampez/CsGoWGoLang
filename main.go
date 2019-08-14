@@ -28,7 +28,9 @@ func main() {
 	//Metodo de create
 	//TODO: Não está passando o item correto usando Postman
 	router.POST("/items", Db.CreateItem)
-	router.GET("/items/:id", Db.GetItems)
+	router.GET("/items", Db.GetItems)
+	//Metodo para editar item
+	router.PUT("/items", Db.UpdatePerson)
 	//Metodo get por Id
 	router.GET("/items/:id", Db.GetItemById)
 	router.Run(":8080")
