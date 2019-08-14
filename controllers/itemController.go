@@ -10,20 +10,27 @@ import (
 
 //Busca item por Id no banco
 func (db *Db) GetItem(c *gin.Context) {
+	var items = new([]model.Item)
+	var _items = new([]model.TransformedItem)
+
 	var (
-		item   model.Item
+		//	item   model.Item
 		result gin.H
 	)
 	id := c.Param("id")
+	fmt.Println("O ID PASSADO FOI O NUMERO :", id)
 	db.DB.LogMode(true)
-	db.DB.Debug().Find(&item)
+	db.DB.Find(&items)
 
-	db.DB.Where("id = ?", id).First(&item)
-	fmt.Println(db.DB.Find(&item))
+	//db.DB.Where("id = ?", id).First(&item)
+	fmt.Println("PASSOU NO FIND")
+
+	_items = append(_items, model.TransformedItem{ID: items.id, Name: items.name})
+
+	fmt.Println(_items)
 
 	result = gin.H{
-		"result": item,
-		"count":  1,
+		"result": _items,
 	}
 	fmt.Println(result)
 	c.JSON(http.StatusOK, result)
