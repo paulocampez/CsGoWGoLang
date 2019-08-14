@@ -26,14 +26,14 @@ type Funcionario struct {
 }
 
 func main() {
-	response, err := http.Get("https://ledacards20190524012526.azurewebsites.net/api/Home/BuscaCPF/80478555490")
+	response, err := http.Get("https://ledacards20190524012526.azurewebsites.net/api/Home/")
 	if err != nil {
 		fmt.Print(err.Error())
 		os.Exit(1)
 	}
 	//fmt.Println(ioutil.ReadAll(response.Body))
 	responseData, err := ioutil.ReadAll(response.Body)
-	fmt.Println(string(responseData))
+	//fmt.Println(string(responseData))
 	if err != nil {
 		log.Fatal(err)
 		fmt.Println("ERRO")
@@ -44,9 +44,9 @@ func main() {
 
 	//fmt.Println(string(responseObject.Name))
 	//fmt.Println(len(responseObject.Name))
-	fmt.Println(responseObject[0].Name)
-	//	for i := 0; i < len(responseObject.Name); i++ {
-	//	fmt.Println(responseObject.Name)
-	//	}
+	//fmt.Println(responseObject[0].Name)
+	for i := 0; i < len(responseObject); i++ {
+		fmt.Println(responseObject[i].Name)
+	}
 
 }
