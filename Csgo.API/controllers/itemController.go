@@ -15,7 +15,7 @@ func (db *Db) GetItems(c *gin.Context) {
 	var (
 		result gin.H
 	)
-	id := c.Param("id")
+	//id := c.Param("id")
 	db.DB.LogMode(true)
 	db.DB.Find(&items)
 	//db.DB.Where("id = ?", id).First(&item)
@@ -28,23 +28,22 @@ func (db *Db) GetItems(c *gin.Context) {
 
 //Edita Item
 func (db *Db) UpdatePerson(c *gin.Context) {
-	var item new(model.Item)
+	var item model.Item
 	id := c.Params.ByName("id")
 	if err := db.DB.Where("id = ?", id).First(&item).Error; err != nil {
-	   c.AbortWithStatus(404)
-	   fmt.Println(err)
+		c.AbortWithStatus(404)
+		fmt.Println(err)
 	}
 	c.BindJSON(&item)
-	db.Save(&item)
+	db.DB.Save(&item)
 	c.JSON(200, item)
-   }
+}
 
-   
-func (db *Db) DeleteItem(c *gin.Context){
-	var item model.Item;
+func (db *Db) DeleteItem(c *gin.Context) {
+	var item model.Item
 	id := c.Params.ByName("id")
-	db.First(&item, id)
-	db.Delete(&item)
+	db.DB.First(&item, id)
+	db.DB.Delete(&item)
 	c.JSON(http.StatusOK, gin.H{"success": "Item #" + id + " deleted"})
 }
 
@@ -57,7 +56,7 @@ func (db *Db) GetItemsById(c *gin.Context) {
 	)
 	id := c.Param("id")
 	db.DB.LogMode(true)
-	db.DB.Where("id = ?", id).First(&item)
+	db.DB.Where("id = ?", id).First(&items)
 	result = gin.H{
 		"result": items,
 	}

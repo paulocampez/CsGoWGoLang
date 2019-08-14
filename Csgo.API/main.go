@@ -20,15 +20,14 @@ func main() {
 	router := gin.Default()
 	Db := &controllers.Db{DB: db}
 
-	
-	router.GET("/items/:id", Db.GetItemById)
+	router.GET("/items/:id", Db.GetItemsById)
 	router.GET("/items", Db.GetItems)
 	router.POST("/items", Db.CreateItem)
 	router.PUT("/items", Db.UpdatePerson)
 	router.DELETE("/items/:id", Db.DeleteItem)
 	router.Run(":8080")
 	fmt.Println(db)
-	
+
 	//Login usando jwt
 	//router.POST("/login", LoginHandler)
 }
