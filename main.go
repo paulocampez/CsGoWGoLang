@@ -16,29 +16,21 @@ type Credential struct {
 }
 
 func main() {
-
-	//configuracoes de conexao
 	db := config.DBInit()
 	router := gin.Default()
 	Db := &controllers.Db{DB: db}
 
-	//Login usando jwt
-	//router.POST("/login", LoginHandler)
-
-	//Metodo de create
-	//TODO: Não está passando o item correto usando Postman
-	router.POST("/items", Db.CreateItem)
-	router.GET("/items", Db.GetItems)
-	//Metodo para editar item
-	router.PUT("/items", Db.UpdatePerson)
-	//Metodo get por Id
+	
 	router.GET("/items/:id", Db.GetItemById)
-
-	//delete
+	router.GET("/items", Db.GetItems)
+	router.POST("/items", Db.CreateItem)
+	router.PUT("/items", Db.UpdatePerson)
 	router.DELETE("/items/:id", Db.DeleteItem)
 	router.Run(":8080")
-	//adicionado println para tirar erro da variavel
 	fmt.Println(db)
+	
+	//Login usando jwt
+	//router.POST("/login", LoginHandler)
 }
 
 //Codigo retirado do https://godoc.org/
