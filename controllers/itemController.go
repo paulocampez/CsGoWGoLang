@@ -11,7 +11,6 @@ import (
 //Busca item por Id no banco
 func (db *Db) GetItem(c *gin.Context) {
 	var items = new([]model.Item)
-	var _items = new([]model.TransformedItem)
 
 	var (
 		//	item   model.Item
@@ -25,12 +24,10 @@ func (db *Db) GetItem(c *gin.Context) {
 	//db.DB.Where("id = ?", id).First(&item)
 	fmt.Println("PASSOU NO FIND")
 
-	_items = append(_items, model.TransformedItem{ID: items.id, Name: items.name})
-
-	fmt.Println(_items)
+	fmt.Println(items)
 
 	result = gin.H{
-		"result": _items,
+		"result": items,
 	}
 	fmt.Println(result)
 	c.JSON(http.StatusOK, result)
