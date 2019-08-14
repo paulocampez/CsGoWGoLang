@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"./config"
+	"./controllers"
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
@@ -18,7 +19,11 @@ func main() {
 
 	db := config.DBInit()
 	router := gin.Default()
-	router.POST("/login", LoginHandler)
+	Db := &controllers.Db{DB: db}
+
+	//pega registro por id
+	router.GET("/items/:id", Db.GetItem)
+	//router.POST("/login", LoginHandler)
 	router.Run(":3000")
 	//adicionado println para tirar erro da variavel
 	fmt.Println(db)
