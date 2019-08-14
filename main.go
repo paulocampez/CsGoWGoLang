@@ -33,6 +33,9 @@ func main() {
 	router.PUT("/items", Db.UpdatePerson)
 	//Metodo get por Id
 	router.GET("/items/:id", Db.GetItemById)
+
+	//delete
+	router.DELETE("/items/:id", Db.DeleteItem)
 	router.Run(":8080")
 	//adicionado println para tirar erro da variavel
 	fmt.Println(db)

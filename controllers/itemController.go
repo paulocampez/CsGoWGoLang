@@ -39,6 +39,14 @@ func (db *Db) UpdatePerson(c *gin.Context) {
 	c.JSON(200, item)
    }
 
+   
+func (db *Db) DeleteItem(c *gin.Context){
+	var item model.Item;
+	id := c.Params.ByName("id")
+	db.First(&item, id)
+	db.Delete(&item)
+	c.JSON(http.StatusOK, gin.H{"success": "Item #" + id + " deleted"})
+}
 
 //Busca item por Id no banco
 func (db *Db) GetItemsById(c *gin.Context) {
