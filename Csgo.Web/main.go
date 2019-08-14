@@ -10,13 +10,13 @@ import (
 )
 
 type Root struct {
-	Func []Funcionario `json:""`
+	Funcionario []Funcionario `json:"root"`
 }
 
 // A Response struct to map the Entire Response
 type Funcionario struct {
 	ID           int     `json:idFuncionario`
-	Name         string  `json:"name"`
+	Name         string  `json:"nome"`
 	CPF          string  `json:"cpf"`
 	DataCadastro string  `json:"dataCad"`
 	Cargo        string  `json:"cargo"`
@@ -31,20 +31,20 @@ func main() {
 		fmt.Print(err.Error())
 		os.Exit(1)
 	}
-
+	//fmt.Println(ioutil.ReadAll(response.Body))
 	responseData, err := ioutil.ReadAll(response.Body)
-	//fmt.Println(responseData)
+	fmt.Println(string(responseData))
 	if err != nil {
 		log.Fatal(err)
 		fmt.Println("ERRO")
 	}
 
-	var responseObject Root
+	var responseObject []Funcionario
 	json.Unmarshal(responseData, &responseObject)
 
-	fmt.Println(responseObject)
+	//fmt.Println(string(responseObject.Name))
 	//fmt.Println(len(responseObject.Name))
-
+	fmt.Println(responseObject[0].Name)
 	//	for i := 0; i < len(responseObject.Name); i++ {
 	//	fmt.Println(responseObject.Name)
 	//	}
