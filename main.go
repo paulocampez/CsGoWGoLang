@@ -17,14 +17,21 @@ type Credential struct {
 
 func main() {
 
+	//configuracoes de conexao
 	db := config.DBInit()
 	router := gin.Default()
 	Db := &controllers.Db{DB: db}
 
-	//pega registro por id
-	router.POST("/items", Db.CreateItem)
-	router.GET("/items/:id", Db.GetItem)
+
+	//Login usando jwt
 	//router.POST("/login", LoginHandler)
+
+	//Metodo de create
+	//TODO: Não está passando o item correto usando Postman
+	router.POST("/items", Db.CreateItem)
+	
+	//Metodo get por Id
+	router.GET("/items/:id", Db.GetItem)
 	router.Run(":3000")
 	//adicionado println para tirar erro da variavel
 	fmt.Println(db)
