@@ -28,3 +28,23 @@ func (db *Db) GetItem(c *gin.Context) {
 	fmt.Println(result)
 	c.JSON(http.StatusOK, result)
 }
+
+func (db *Db) CreateItem(c *gin.Context) {
+
+	//criar jsondecoder
+	var (
+		item   model.Item
+		result gin.H
+	)
+	name := c.PostForm("name")
+	name2 := c.PostForm("Name")
+	fmt.Println("Nomes: ", name, name2)
+	item.Name = name
+	db.DB.LogMode(true)
+	db.DB.Debug().Create(&item)
+	db.DB.Create(&item)
+	result = gin.H{
+		"result": item,
+	}
+	c.JSON(http.StatusOK, result)
+}

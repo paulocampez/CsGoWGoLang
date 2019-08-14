@@ -22,6 +22,7 @@ func main() {
 	Db := &controllers.Db{DB: db}
 
 	//pega registro por id
+	router.POST("/items", Db.CreateItem)
 	router.GET("/items/:id", Db.GetItem)
 	//router.POST("/login", LoginHandler)
 	router.Run(":3000")
