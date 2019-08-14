@@ -8,24 +8,33 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-//Busca item por Id no banco
-func (db *Db) GetItem(c *gin.Context) {
+//Busca todos os items
+func (db *Db) GetItems(c *gin.Context) {
 	var items = new([]model.Item)
 
 	var (
-		//	item   model.Item
 		result gin.H
 	)
 	id := c.Param("id")
-	fmt.Println("O ID PASSADO FOI O NUMERO :", id)
 	db.DB.LogMode(true)
 	db.DB.Find(&items)
-
 	//db.DB.Where("id = ?", id).First(&item)
-	fmt.Println("PASSOU NO FIND")
+	result = gin.H{
+		"result": items,
+	}
+	fmt.Println(result)
+	c.JSON(http.StatusOK, result)
+}
+//Busca item por Id no banco
+func (db *Db) GetItemsById(c *gin.Context) {
+	var items = new([]model.Item)
 
-	fmt.Println(items)
-
+	var (
+		result gin.H
+	)
+	id := c.Param("id")
+	db.DB.LogMode(true)
+	db.DB.Where("id = ?", id).First(&item)
 	result = gin.H{
 		"result": items,
 	}
