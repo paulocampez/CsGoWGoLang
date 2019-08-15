@@ -1,179 +1,16 @@
 package main
 
 import (
+	model "../Csgo.API/model"
+	service "../Csgo.API/services"
 	"fmt"
-	"io/ioutil"
-	"net/http"
-	"path/filepath"
-	"regexp"
-	"runtime"
-	"strings"
-
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
-
-type Deaths struct {
-	deathsFather []DeathGame
-}
-
-type DeathGame struct {
-	player1 string
-	player2 string
-}
-
-type Player struct {
-	name string
-}
-
-type PlayerScore struct {
-	name  string
-	score int
-}
-
-type Kills struct {
-	player string
-	score  int
-}
-type Game struct {
-	totalKill int
-	players   []Player
-	kills     []Kills
-}
-
-var (
-	_, b, _, _ = runtime.Caller(0)
-	basepath   = filepath.Dir(b)
-)
-
-func playerGetScore() {
-
-}
-
-func totalKill(kill int) int {
-	kill++
-	return kill
-}
-
-func readFile() []string {
-	dat, _ := ioutil.ReadFile(basepath + "\\logs\\games.log")
-
-	trimSpaces := strings.TrimSpace(string(dat))
-	lstLines := strings.Split(trimSpaces, "\n")
-	fmt.Println(strings.Contains(lstLines[1], "InitGame"))
-	return lstLines
-}
-
-func checkDeaths(lines []string) Deaths {
-	var deathsMajor Deaths
-	for _, element := range lines {
-		strRegex := "[ˆ0-9]: (.*) killed (.*) [ˆb,y]"
-		match, _ := regexp.MatchString(strRegex, element)
-		if match {
-			r, _ := regexp.Compile(strRegex)
-			nickname := r.FindStringSubmatch(element)
-			deathsMajor.deathsFather = append(deathsMajor.deathsFather, DeathGame{player1: string(nickname[1]), player2: string(nickname[2])})
-		}
-	}
-	return deathsMajor
-}
-
-func addPlayer(line string) string {
-	strRegex := `n\\(.*)\\t\\`
-	r, _ := regexp.Compile(strRegex)
-	match, _ := regexp.MatchString(strRegex, line)
-	if match {
-		nickname := r.FindStringSubmatch(line)
-		return nickname[1]
-	}
-	return ""
-}
-
-//metodo para buscar string em lista
-func Find(a []string, x string) []int {
-	var lstArray []int
-	for i, n := range a {
-		if strings.Contains(n, x) {
-			lstArray = append(lstArray, i)
-		}
-	}
-	return lstArray
-}
-
-func removeDuplicates(elements []string) []string {
-	encountered := map[string]bool{}
-
-	for v := range elements {
-		encountered[elements[v]] = true
-	}
-
-	result := []string{}
-	for key, _ := range encountered {
-		result = append(result, key)
-	}
-	return result
-}
-
-func getPlayersByRound(round int) []string {
-	lines := getByRound(round)
-	var player []string
-	for _, element := range lines {
-		if strings.Contains(element, "ClientUserinfoChanged") {
-			player = append(player, addPlayer(element))
-		}
-	}
-	player = removeDuplicates(player)
-	fmt.Println(player)
-	return player
-}
-
-func getByRound(round int) []string {
-	lstLines := readFile()
-	var rounds []string
-	line := Find(lstLines, "InitGame")
-	if round == len(line) {
-		fmt.Println("ESTOU NO ULTIMO ROUND")
-		//fmt.Println(lstLines[line[round-1]:len(lstLines)])
-		rounds = lstLines[line[round-1]:len(lstLines)]
-	} else {
-		rounds = lstLines[line[round]:line[round+1]]
-	}
-	//fmt.Println(rounds)
-	return rounds
-}
-
-func getParser() {
-	var game Game
-	totalGames := checkGamesQt()
-	for i := 1; i < totalGames; i++ {
-
-	}
-	fmt.Println(game)
-}
-
-func checkGamesQt() int {
-	lines := readFile()
-	qtt := 0
-	for _, element := range lines {
-		if strings.Contains(element, "InitGame") {
-			qtt++
-		}
-	}
-	fmt.Println(qtt)
-	return qtt
-}
-
-type Credential struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
-
-func playerScore(players []string) bool {
-
-}
 
 func main() {
-	fmt.Println(checkDeaths(getByRound(1)))
+	fmt.Println(service.CheckDeaths(service.GetByRound(1)))
 	//checkGamesQt()
 
 	// db := config.DBInit()
@@ -194,7 +31,7 @@ func main() {
 
 //Codigo retirado do https://godoc.org/
 func LoginHandler(c *gin.Context) {
-	var user Credential
+	var user model.Credential
 	err := c.Bind(&user)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
