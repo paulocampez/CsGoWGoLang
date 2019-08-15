@@ -11,7 +11,7 @@ import (
 func main() {
 	//fmt.Println(service.CheckDeaths(service.GetByRound(1)))
 	service.GetParser()
-	//service.GetByRound(21)
+	//fmt.Println(service.CheckDeathsByRound(service.GetByRound(1)))
 	//checkGamesQt()
 
 	// db := config.DBInit()

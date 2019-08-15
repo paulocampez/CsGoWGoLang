@@ -37,7 +37,7 @@ func ReadFile() []string {
 func CheckDeaths(lines []string) model.Deaths {
 	var deathsMajor model.Deaths
 	for _, element := range lines {
-		strRegex := "[ˆ0-9]: (.*) killed (.*) [ˆb,y]"
+		strRegex := `[ˆ0-9]: (.*) killed (.*) [ˆb,y]`
 		match, _ := regexp.MatchString(strRegex, element)
 		if match {
 			r, _ := regexp.Compile(strRegex)
@@ -102,7 +102,7 @@ func GetByRound(round int) []string {
 	var rounds []string
 	line := Find(lstLines, "InitGame")
 	if round == len(line)-1 {
-		fmt.Println("ESTOU NO ULTIMO ROUND")
+		//fmt.Println("ESTOU NO ULTIMO ROUND")
 		//fmt.Println(lstLines[line[round-1]:len(lstLines)])
 		rounds = lstLines[line[round-1]:len(lstLines)]
 	} else {
@@ -112,15 +112,41 @@ func GetByRound(round int) []string {
 	return rounds
 }
 
+func CheckDeathsByRound(lines []string) int {
+	//lines = GetByRound(21)
+	chkdeaths := CheckDeaths(lines)
+	return len(chkdeaths.DeathsFather)
+}
+
 func GetParser() {
 	numberRounds := checkGamesQt()
 	fmt.Println("Numero de Rounds: ", numberRounds)
 	//var allGames model.Root
 	for i := 1; i <= numberRounds; i++ {
+		fmt.Println("--------------------------------")
 		fmt.Println("Players in Game", i, ":")
-		fmt.Println(GetPlayersByRound(i))
+		justSplit := strings.Join(GetPlayersByRound(i), ", ")
+		fmt.Println(justSplit)
+		fmt.Println("Total Kills in Game", CheckDeathsByRound(GetByRound(i)))
+
+		for _, element := range GetPlayersByRound(i) {
+			fmt.Println("Player", element, "Score", GetKillByPlayerAndRound(element, i))
+		}
+		fmt.Println("--------------------------------")
 	}
 	//	fmt.Println(allGames.Games)
+}
+
+func GetKillByPlayerAndRound(player string, round int) int {
+	deathsMajor := CheckDeaths(GetByRound(round))
+	var score int
+	for _, element := range deathsMajor.DeathsFather {
+		if element.Player1 == player {
+			score++
+		}
+	}
+	//fmt.Println("Player", player, "Score:", score)
+	return score
 }
 
 func checkGamesQt() int {
