@@ -130,23 +130,24 @@ func GetParser() {
 		fmt.Println("Total Kills in Game", CheckDeathsByRound(GetByRound(i)))
 
 		for _, element := range GetPlayersByRound(i) {
-			fmt.Println("Player", element, "Score", GetKillByPlayerAndRound(element, i))
+			fmt.Println(GetKillByPlayerAndRound(element, i))
 		}
 		fmt.Println("--------------------------------")
 	}
 	//	fmt.Println(allGames.Games)
 }
 
-func GetKillByPlayerAndRound(player string, round int) int {
+func GetKillByPlayerAndRound(player string, round int) model.PlayerScore {
 	deathsMajor := CheckDeaths(GetByRound(round))
+	var playerScored model.PlayerScore
 	var score int
 	for _, element := range deathsMajor.DeathsFather {
 		if element.Player1 == player {
 			score++
 		}
 	}
-	//fmt.Println("Player", player, "Score:", score)
-	return score
+	playerScored = model.PlayerScore{Name: player, Score: score}
+	return playerScored
 }
 
 func checkGamesQt() int {
