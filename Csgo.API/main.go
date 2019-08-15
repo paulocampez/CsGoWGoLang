@@ -121,6 +121,21 @@ func getPlayersByRound(round int) []string {
 	return player
 }
 
+// func getKillsByRound(round int) (string, string) {
+// 	lines := getByRound(round)
+// 	for _, element := range lines {
+// 		strRegex := "[ˆ0-9]: (.*) killed (.*) [ˆb,y]"
+// 		match, _ := regexp.MatchString(strRegex, element)
+// 		if match {
+// 			r, _ := regexp.Compile(strRegex)
+// 			nickname := r.FindStringSubmatch(element)
+// 			fmt.Println(nickname)
+// 		}
+// 	}
+
+// 	return "", ""
+// }
+
 func getByRound(round int) []string {
 	lstLines := readFile()
 	var rounds []string
@@ -163,7 +178,7 @@ type Credential struct {
 }
 
 func main() {
-	getPlayersByRound(1)
+	fmt.Println(checkDeaths(getByRound(1)))
 	//checkGamesQt()
 
 	// db := config.DBInit()
