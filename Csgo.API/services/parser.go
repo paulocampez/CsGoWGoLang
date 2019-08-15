@@ -121,12 +121,17 @@ func CheckDeathsByRound(lines []string) int {
 func GetParser() {
 	numberRounds := checkGamesQt()
 	fmt.Println("Numero de Rounds: ", numberRounds)
-	//var allGames model.Root
+	var allGames model.Root
+	var allPlayers model.Game
 	for i := 1; i <= numberRounds; i++ {
-		fmt.Println("--------------------------------")
-		fmt.Println("Players in Game", i, ":")
-		justSplit := strings.Join(GetPlayersByRound(i), ", ")
-		fmt.Println(justSplit)
+
+		//allGames.Game = append(allGames.Game,model.Game{TotalKill: CheckDeathsByRound(GetByRound(i)})
+		//fmt.Println(allGames.Game)
+		allPlayers.Players = append(allPlayers.Players)
+		//fmt
+		//fmt.Println("Players in Game", i, ":")
+		//justSplit := strings.Join(GetPlayersByRound(i), ", ")
+		fmt.Println(GetPlayersByRound(i))
 		fmt.Println("Total Kills in Game", CheckDeathsByRound(GetByRound(i)))
 
 		for _, element := range GetPlayersByRound(i) {
@@ -159,8 +164,4 @@ func checkGamesQt() int {
 		}
 	}
 	return qtt
-}
-
-func PlayerScore(players []string) bool {
-	return true
 }
