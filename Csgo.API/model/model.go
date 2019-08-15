@@ -41,7 +41,8 @@ type Game struct {
 	Kills     []Kills  `json:kills`
 }
 type Root struct {
-	Games []Game `json:game`
+	GameNumber int `json?"game"`
+	Games      []Game
 }
 
 type Credential struct {

@@ -10,6 +10,8 @@ import (
 
 func main() {
 	//fmt.Println(service.CheckDeaths(service.GetByRound(1)))
+	//fmt.Println(service.GetAllKillsInRound(21))
+	//fmt.Println(service.GetPlayersByRound(2))
 	service.GetParser()
 	//fmt.Println(service.CheckDeathsByRound(service.GetByRound(1)))
 	//checkGamesQt()

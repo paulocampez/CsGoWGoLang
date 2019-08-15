@@ -30,7 +30,6 @@ func ReadFile() []string {
 	//dat, _ := ioutil.ReadFile(basepath + "\\logs\\games.log")
 	trimSpaces := strings.TrimSpace(string(dat))
 	lstLines := strings.Split(trimSpaces, "\n")
-	//fmt.Println(lstLines)
 	return lstLines
 }
 
@@ -84,16 +83,27 @@ func RemoveDuplicates(elements []string) []string {
 	return result
 }
 
-func GetPlayersByRound(round int) []string {
+func GetPlayersByRound(round int) []model.Player {
 	lines := GetByRound(round)
-	var player []string
+	var player []model.Player
+	var playerTransformed []model.Player
 	for _, element := range lines {
 		if strings.Contains(element, "ClientUserinfoChanged") {
-			player = append(player, AddPlayer(element))
+			player = append(player, model.Player{Name: AddPlayer(element)})
 		}
 	}
-	player = RemoveDuplicates(player)
-	return player
+	var s []string
+	for _, v := range player {
+		s = append(s, v.Name)
+	}
+
+	s = RemoveDuplicates(s)
+
+	for _, t := range s {
+		playerTransformed = append(playerTransformed, model.Player{Name: t})
+	}
+
+	return playerTransformed
 }
 
 func GetByRound(round int) []string {
@@ -102,18 +112,15 @@ func GetByRound(round int) []string {
 	var rounds []string
 	line := Find(lstLines, "InitGame")
 	if round == len(line)-1 {
-		//fmt.Println("ESTOU NO ULTIMO ROUND")
 		//fmt.Println(lstLines[line[round-1]:len(lstLines)])
 		rounds = lstLines[line[round-1]:len(lstLines)]
 	} else {
 		rounds = lstLines[line[round]:line[round+1]]
 	}
-	//fmt.Println(rounds)
 	return rounds
 }
 
 func CheckDeathsByRound(lines []string) int {
-	//lines = GetByRound(21)
 	chkdeaths := CheckDeaths(lines)
 	return len(chkdeaths.DeathsFather)
 }
@@ -122,36 +129,34 @@ func GetParser() {
 	numberRounds := checkGamesQt()
 	fmt.Println("Numero de Rounds: ", numberRounds)
 	var allGames model.Root
-	var allPlayers model.Game
+
 	for i := 1; i <= numberRounds; i++ {
-
-		//allGames.Game = append(allGames.Game,model.Game{TotalKill: CheckDeathsByRound(GetByRound(i)})
-		//fmt.Println(allGames.Game)
-		allPlayers.Players = append(allPlayers.Players)
-		//fmt
-		//fmt.Println("Players in Game", i, ":")
-		//justSplit := strings.Join(GetPlayersByRound(i), ", ")
-		fmt.Println(GetPlayersByRound(i))
-		fmt.Println("Total Kills in Game", CheckDeathsByRound(GetByRound(i)))
-
-		for _, element := range GetPlayersByRound(i) {
-			fmt.Println(GetKillByPlayerAndRound(element, i))
-		}
+		allGames.GameNumber = i
+		allGames.Games = append(allGames.Games, model.Game{TotalKill: CheckDeathsByRound(GetByRound(i)), Players: GetPlayersByRound(i), Kills: GetAllKillsInRound(i)})
+		fmt.Println(allGames)
 		fmt.Println("--------------------------------")
 	}
-	//	fmt.Println(allGames.Games)
 }
 
-func GetKillByPlayerAndRound(player string, round int) model.PlayerScore {
+func GetAllKillsInRound(round int) []model.Kills {
+	var lstKills []model.Kills
+	for _, element := range GetPlayersByRound(round) {
+		mdl := GetKillByPlayerAndRound(element.Name, round)
+		lstKills = append(lstKills, model.Kills{Player: mdl.Player, Score: mdl.Score})
+	}
+	return lstKills
+}
+
+func GetKillByPlayerAndRound(player string, round int) model.Kills {
 	deathsMajor := CheckDeaths(GetByRound(round))
-	var playerScored model.PlayerScore
+	var playerScored model.Kills
 	var score int
 	for _, element := range deathsMajor.DeathsFather {
 		if element.Player1 == player {
 			score++
 		}
 	}
-	playerScored = model.PlayerScore{Name: player, Score: score}
+	playerScored = model.Kills{Player: player, Score: score}
 	return playerScored
 }
 
