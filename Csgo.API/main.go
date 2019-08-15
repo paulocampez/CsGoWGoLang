@@ -40,6 +40,15 @@ var (
 	basepath   = filepath.Dir(b)
 )
 
+func playerGetScore() {
+
+}
+
+func totalKill(kill int) int {
+	kill++
+	return kill
+}
+
 func readFile() []string {
 	dat, _ := ioutil.ReadFile(basepath + "\\logs\\games.log")
 
