@@ -36,12 +36,25 @@ type Kills struct {
 	Score  int
 }
 type Game struct {
-	TotalKill int
-	Players   []Player
-	Kills     []Kills
+	TotalKill int      `json:total_kills`
+	Players   []Player `json:players`
+	Kills     []Kills  `json:kills`
+}
+type Root struct {
+	Games []Game `json:game`
 }
 
 type Credential struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
+
+//game_1: {
+//     total_kills: 45;
+//     players: ["Dono da bola", "Isgalamido", "Zeh"]
+//  kills: {
+//       "Dono da bola": 5,
+//       "Isgalamido": 18,
+//       "Zeh": 20
+//   }
+//}

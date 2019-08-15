@@ -93,15 +93,15 @@ func GetPlayersByRound(round int) []string {
 		}
 	}
 	player = RemoveDuplicates(player)
-	fmt.Println(player)
 	return player
 }
 
 func GetByRound(round int) []string {
 	lstLines := ReadFile()
+	round = round - 1
 	var rounds []string
 	line := Find(lstLines, "InitGame")
-	if round == len(line) {
+	if round == len(line)-1 {
 		fmt.Println("ESTOU NO ULTIMO ROUND")
 		//fmt.Println(lstLines[line[round-1]:len(lstLines)])
 		rounds = lstLines[line[round-1]:len(lstLines)]
@@ -113,12 +113,14 @@ func GetByRound(round int) []string {
 }
 
 func GetParser() {
-	var game model.Game
-	totalGames := checkGamesQt()
-	for i := 1; i < totalGames; i++ {
-
+	numberRounds := checkGamesQt()
+	fmt.Println("Numero de Rounds: ", numberRounds)
+	//var allGames model.Root
+	for i := 1; i <= numberRounds; i++ {
+		fmt.Println("Players in Game", i, ":")
+		fmt.Println(GetPlayersByRound(i))
 	}
-	fmt.Println(game)
+	//	fmt.Println(allGames.Games)
 }
 
 func checkGamesQt() int {
@@ -129,7 +131,6 @@ func checkGamesQt() int {
 			qtt++
 		}
 	}
-	fmt.Println(qtt)
 	return qtt
 }
 
