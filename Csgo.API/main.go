@@ -63,8 +63,32 @@ func checkDeaths(lines []string) Deaths {
 	return deathsMajor
 }
 
-func getPlayersByRound() []string {
-	
+//metodo para buscar string em lista
+func Find(a []string, x string) []int {
+	var lstArray []int
+	for i, n := range a {
+		if strings.Contains(n, x) {
+			lstArray = append(lstArray, i)
+		}
+	}
+	return lstArray
+}
+
+func getPlayersByRound(round int) []string {
+	lstLines := readFile()
+	var rounds []string
+	line := Find(lstLines, "InitGame")
+	fmt.Println(line)
+	fmt.Println(len(lstLines))
+	fmt.Println(len(line))
+	if round == len(line) {
+		fmt.Println("ESTOU NO ULTIMO ROUND")
+		//fmt.Println(lstLines[line[round-1]:len(lstLines)])
+		rounds = lstLines[line[round-1]:len(lstLines)]
+	} else {
+		rounds = lstLines[line[round]:line[round+1]]
+	}
+	fmt.Println(rounds)
 	return readFile()
 }
 
@@ -95,8 +119,8 @@ type Credential struct {
 }
 
 func main() {
-
-	checkGamesQt()
+	getPlayersByRound(21)
+	//checkGamesQt()
 
 	// db := config.DBInit()
 	// router := gin.Default()
