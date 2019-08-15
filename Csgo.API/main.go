@@ -63,6 +63,17 @@ func checkDeaths(lines []string) Deaths {
 	return deathsMajor
 }
 
+func addPlayer(line string) string {
+	strRegex := `n\\(.*)\\t\\`
+	r, _ := regexp.Compile(strRegex)
+	match, _ := regexp.MatchString(strRegex, line)
+	if match {
+		nickname := r.FindStringSubmatch(line)
+		return nickname[1]
+	}
+	return ""
+}
+
 //metodo para buscar string em lista
 func Find(a []string, x string) []int {
 	var lstArray []int
@@ -74,13 +85,37 @@ func Find(a []string, x string) []int {
 	return lstArray
 }
 
+func removeDuplicates(elements []string) []string {
+	encountered := map[string]bool{}
+
+	for v := range elements {
+		encountered[elements[v]] = true
+	}
+
+	result := []string{}
+	for key, _ := range encountered {
+		result = append(result, key)
+	}
+	return result
+}
+
 func getPlayersByRound(round int) []string {
+	lines := getByRound(round)
+	var player []string
+	for _, element := range lines {
+		if strings.Contains(element, "ClientUserinfoChanged") {
+			player = append(player, addPlayer(element))
+		}
+	}
+	player = removeDuplicates(player)
+	fmt.Println(player)
+	return player
+}
+
+func getByRound(round int) []string {
 	lstLines := readFile()
 	var rounds []string
 	line := Find(lstLines, "InitGame")
-	fmt.Println(line)
-	fmt.Println(len(lstLines))
-	fmt.Println(len(line))
 	if round == len(line) {
 		fmt.Println("ESTOU NO ULTIMO ROUND")
 		//fmt.Println(lstLines[line[round-1]:len(lstLines)])
@@ -88,8 +123,8 @@ func getPlayersByRound(round int) []string {
 	} else {
 		rounds = lstLines[line[round]:line[round+1]]
 	}
-	fmt.Println(rounds)
-	return readFile()
+	//fmt.Println(rounds)
+	return rounds
 }
 
 func getParser() {
@@ -119,7 +154,7 @@ type Credential struct {
 }
 
 func main() {
-	getPlayersByRound(21)
+	getPlayersByRound(1)
 	//checkGamesQt()
 
 	// db := config.DBInit()
