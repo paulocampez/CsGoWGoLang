@@ -10,6 +10,7 @@ import (
 
 func main() {
 	var root = service.GetParser()
+
 	r := gin.Default()
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
