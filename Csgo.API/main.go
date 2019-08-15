@@ -22,6 +22,19 @@ type DeathGame struct {
 	player2 string
 }
 
+type Player struct {
+	name string
+}
+type Kills struct {
+	player string
+	score  int
+}
+type Game struct {
+	totalKill int
+	players   []Player
+	kills     []Kills
+}
+
 var (
 	_, b, _, _ = runtime.Caller(0)
 	basepath   = filepath.Dir(b)
@@ -42,13 +55,26 @@ func checkDeaths(lines []string) Deaths {
 		strRegex := "[ˆ0-9]: (.*) killed (.*) [ˆb,y]"
 		match, _ := regexp.MatchString(strRegex, element)
 		if match {
-
 			r, _ := regexp.Compile(strRegex)
 			nickname := r.FindStringSubmatch(element)
 			deathsMajor.deathsFather = append(deathsMajor.deathsFather, DeathGame{player1: string(nickname[1]), player2: string(nickname[2])})
 		}
 	}
 	return deathsMajor
+}
+
+func getPlayersByRound() []string {
+	
+	return readFile()
+}
+
+func getParser() {
+	var game Game
+	totalGames := checkGamesQt()
+	for i := 1; i < totalGames; i++ {
+
+	}
+	fmt.Println(game)
 }
 
 func checkGamesQt() int {
