@@ -12,7 +12,7 @@ var (
 	server   = "dbledark.database.windows.net"
 	port     = 1433
 	user     = "Ledark"
-	password = "C4bymbxwo!"
+	password = "!"
 	database = "Ledark"
 )
 
