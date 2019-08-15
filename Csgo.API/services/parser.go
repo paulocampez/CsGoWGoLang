@@ -2,7 +2,7 @@ package services
 
 import (
 	model "../model"
-	"fmt"
+	//"fmt"
 	"io/ioutil"
 	"path/filepath"
 	"regexp"
@@ -125,17 +125,15 @@ func CheckDeathsByRound(lines []string) int {
 	return len(chkdeaths.DeathsFather)
 }
 
-func GetParser() {
+func GetParser() model.Root {
 	numberRounds := checkGamesQt()
-	fmt.Println("Numero de Rounds: ", numberRounds)
+	//fmt.Println("Numero de Rounds: ", numberRounds)
 	var allGames model.Root
 
 	for i := 1; i <= numberRounds; i++ {
-		allGames.GameNumber = i
-		allGames.Games = append(allGames.Games, model.Game{TotalKill: CheckDeathsByRound(GetByRound(i)), Players: GetPlayersByRound(i), Kills: GetAllKillsInRound(i)})
-		fmt.Println(allGames)
-		fmt.Println("--------------------------------")
+		allGames.Games = append(allGames.Games, model.Game{GameNumber: i, TotalKill: CheckDeathsByRound(GetByRound(i)), Players: GetPlayersByRound(i), Kills: GetAllKillsInRound(i)})
 	}
+	return allGames
 }
 
 func GetAllKillsInRound(round int) []model.Kills {

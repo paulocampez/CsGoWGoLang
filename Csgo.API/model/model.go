@@ -36,13 +36,13 @@ type Kills struct {
 	Score  int
 }
 type Game struct {
-	TotalKill int      `json:total_kills`
-	Players   []Player `json:players`
-	Kills     []Kills  `json:kills`
+	GameNumber int      `json:"game"`
+	TotalKill  int      `json:total_kills`
+	Players    []Player `json:players`
+	Kills      []Kills  `json:kills`
 }
 type Root struct {
-	GameNumber int `json?"game"`
-	Games      []Game
+	Games []Game
 }
 
 type Credential struct {
