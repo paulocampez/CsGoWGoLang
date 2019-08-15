@@ -25,6 +25,12 @@ type DeathGame struct {
 type Player struct {
 	name string
 }
+
+type PlayerScore struct {
+	name  string
+	score int
+}
+
 type Kills struct {
 	player string
 	score  int
@@ -121,21 +127,6 @@ func getPlayersByRound(round int) []string {
 	return player
 }
 
-// func getKillsByRound(round int) (string, string) {
-// 	lines := getByRound(round)
-// 	for _, element := range lines {
-// 		strRegex := "[ˆ0-9]: (.*) killed (.*) [ˆb,y]"
-// 		match, _ := regexp.MatchString(strRegex, element)
-// 		if match {
-// 			r, _ := regexp.Compile(strRegex)
-// 			nickname := r.FindStringSubmatch(element)
-// 			fmt.Println(nickname)
-// 		}
-// 	}
-
-// 	return "", ""
-// }
-
 func getByRound(round int) []string {
 	lstLines := readFile()
 	var rounds []string
@@ -175,6 +166,10 @@ func checkGamesQt() int {
 type Credential struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
+}
+
+func playerScore(players []string) bool {
+
 }
 
 func main() {
